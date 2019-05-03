@@ -20,8 +20,21 @@
 /**
  * ORIGIN GET CODE END
  */ 
+
+Auth::routes();
+
 Route::get('/', 'WelcomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
+
+/**
+ * articles
+ */
+
 Route::resource('articles', 'ArticlesController');
+
+/**
+ * auth
+ */
 
 Route::get('auth/login', function() {
 	$credentials = [
@@ -36,16 +49,17 @@ Route::get('auth/login', function() {
 	return redirect('protected');
 });
 
-Route::get('protected', ['middleware' => 'auth', function() {
-	return '어서오세요.'.auth()->user()->name;
-}]);
-
 Route::get('auth/logout', function() {
 	auth()->logout();
 
 	return 'bye';
 });
 
-Auth::routes();
+Route::get('protected', ['middleware' => 'auth', function() {
+	return '어서오세요.'.auth()->user()->name;
+}]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+// DB::listen(function ($query) {
+// 	var_dump($query->sql);
+// });
